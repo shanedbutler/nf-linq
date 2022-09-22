@@ -56,21 +56,36 @@ namespace linqd
             // Order names in descending order. ASK: What is the explicit type of descendingNames var? (linq method)
             var descendingNames = names.OrderByDescending(n => n);
             Console.WriteLine("\nStrings sorted in descending order:");
-            foreach (var name in descendingNames)
+            foreach (string name in descendingNames)
             {
                 Console.WriteLine(name);
             }
 
-            // Build a collection of these numbers sorted in ascending order (linq query)
-            List<int> numbers2 = new List<int>() {15, 8, 21, 24, 32, 13, 30, 12, 7, 54, 48, 4, 49, 96};
+            // Build a collection of our numbers list sorted in ascending order (linq query)
             var descendingNumbers = from number in numbers
                                      orderby number ascending
                                      select number; 
             Console.WriteLine("\nNumbers sorted in ascending order:");
-            foreach (var number in descendingNumbers)
+            foreach (int number in descendingNumbers)
             {
                 Console.WriteLine(number);
             }
+
+            Console.WriteLine("\nAggregate Operations:\n");
+            List<double> purchases = new List<double>()
+            {
+                2340.29, 745.31, 21.76, 34.03, 4786.45, 879.45, 9442.85, 2454.63, 45.65
+            };
+            //Using a method count
+            Console.WriteLine($"We've made {purchases.Count} sales");
+
+            // How much money have we made?
+            var earnings = Math.Round(purchases.Sum(), 2);
+            Console.WriteLine($"Totaling in ${earnings}");
+
+            // Print the highest price sale
+            double highestPurchase = Math.Round(purchases.Max(), 2);
+            Console.WriteLine($"Our highest priced sale was for ${highestPurchase}");
 
         }
         //Method to filter strings in collection by their first letter
