@@ -54,7 +54,7 @@ namespace linqd
             };
 
             // Order names in descending order. ASK: What is the explicit type of descendingNames var? (linq method)
-            var descendingNames = names.OrderByDescending(n => n);
+            IEnumerable<string> descendingNames = names.OrderByDescending(n => n);
             Console.WriteLine("\nStrings sorted in descending order:");
             foreach (string name in descendingNames)
             {
@@ -62,9 +62,9 @@ namespace linqd
             }
 
             // Build a collection of our numbers list sorted in ascending order (linq query)
-            var descendingNumbers = from number in numbers
-                                     orderby number ascending
-                                     select number; 
+            IEnumerable<int> descendingNumbers = from number in numbers
+                                    orderby number ascending
+                                    select number;
             Console.WriteLine("\nNumbers sorted in ascending order:");
             foreach (int number in descendingNumbers)
             {
@@ -80,13 +80,27 @@ namespace linqd
             Console.WriteLine($"We've made {purchases.Count} sales");
 
             // How much money have we made?
-            var earnings = Math.Round(purchases.Sum(), 2);
+            double earnings = Math.Round(purchases.Sum(), 2);
             Console.WriteLine($"Totaling in ${earnings}");
 
             // Print the highest price sale
             double highestPurchase = Math.Round(purchases.Max(), 2);
             Console.WriteLine($"Our highest priced sale was for ${highestPurchase}");
 
+            Console.WriteLine("\nPartitioning Operations\n");
+
+            List<int> numbers2 = new List<int>()
+            {
+                66, 12, 8, 27, 82, 34, 7, 50, 19, 46, 81, 23, 30, 4, 68, 14
+            };
+            IEnumerable<int> perfectSquares = from number in numbers2
+                                 where (Math.Sqrt(number) % 1  == 0)
+                                 select number;
+            Console.WriteLine($"The numbers II list has {perfectSquares.Count()} perfect squares: ");
+            foreach (var number in perfectSquares)
+            {
+            Console.WriteLine(number);
+            }
         }
         //Method to filter strings in collection by their first letter
         public static List<string> FilterByFirstLetter(List<string> collection, string letter)
