@@ -65,7 +65,7 @@ namespace linqd
             IEnumerable<int> descendingNumbers = from number in numbers
                                                  orderby number ascending
                                                  select number;
-                                                 
+
             Console.WriteLine("\nNumbers sorted in ascending order:");
             foreach (int number in descendingNumbers)
             {
@@ -125,7 +125,7 @@ namespace linqd
                                    group customer.Name by customer.Bank into bankGroup
                                    select new millionaireBanks {Bank = bankGroup.Key, Count = bankGroup.Count()};
 
-            foreach (var bMil in bankMillionaires)
+            foreach (millionaireBanks bMil in bankMillionaires)
             {
                 Console.WriteLine($"{bMil.Bank}: {bMil.Count}");
             }
