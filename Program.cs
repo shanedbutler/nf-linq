@@ -31,7 +31,7 @@ namespace linqd
                 Console.WriteLine(result);
             }
 
-            List<int> numbers = new List<int>() {15, 8, 21, 24, 32, 13, 30, 12, 7, 54, 48, 4, 49, 96};
+            List<int> numbers = new List<int>() { 15, 8, 21, 24, 32, 13, 30, 12, 7, 54, 48, 4, 49, 96 };
 
             // Display numbers that are multiples of 4 or 6
             IEnumerable<int> fourSixMultiples = numbers.Where(number => number % 4 == 0 || number % 6 == 0);
@@ -63,8 +63,9 @@ namespace linqd
 
             // Build a collection of our numbers list sorted in ascending order (linq query)
             IEnumerable<int> descendingNumbers = from number in numbers
-                                    orderby number ascending
-                                    select number;
+                                                 orderby number ascending
+                                                 select number;
+                                                 
             Console.WriteLine("\nNumbers sorted in ascending order:");
             foreach (int number in descendingNumbers)
             {
@@ -93,14 +94,47 @@ namespace linqd
             {
                 66, 12, 8, 27, 82, 34, 7, 50, 19, 46, 81, 23, 30, 4, 68, 14
             };
+
             IEnumerable<int> perfectSquares = from number in numbers2
-                                 where (Math.Sqrt(number) % 1  == 0)
-                                 select number;
+                                              where (Math.Sqrt(number) % 1 == 0)
+                                              select number;
             Console.WriteLine($"The numbers II list has {perfectSquares.Count()} perfect squares: ");
-            foreach (var number in perfectSquares)
+            foreach (int number in perfectSquares)
             {
-            Console.WriteLine(number);
+                Console.WriteLine(number);
             }
+
+            List<Customer> customers = new List<Customer>()
+            {
+                new Customer(){ Name="Bob Lesman", Balance=80345.66, Bank="FTB"},
+                new Customer(){ Name="Joe Landy", Balance=9284756.21, Bank="WF"},
+                new Customer(){ Name="Meg Ford", Balance=487233.01, Bank="BOA"},
+                new Customer(){ Name="Peg Vale", Balance=7001449.92, Bank="BOA"},
+                new Customer(){ Name="Mike Johnson", Balance=790872.12, Bank="WF"},
+                new Customer(){ Name="Les Paul", Balance=8374892.54, Bank="WF"},
+                new Customer(){ Name="Sid Crosby", Balance=957436.39, Bank="FTB"},
+                new Customer(){ Name="Sarah Ng", Balance=56562389.85, Bank="FTB"},
+                new Customer(){ Name="Tina Fey", Balance=1000000.00, Bank="CITI"},
+                new Customer(){ Name="Sid Brown", Balance=49582.68, Bank="CITI"}
+            };
+
+            Console.WriteLine("\nLINQ'D Bank Millionaires Count");
+
+            var bankMillionaires = from customer in customers
+                                   where (customer.Balance >= 1000000)
+                                   group customer.Name by customer.Bank into bankGroup
+                                   select new millionaireBanks {Bank = bankGroup.Key, Count = bankGroup.Count()};
+
+            foreach (var bMil in bankMillionaires)
+            {
+                Console.WriteLine($"{bMil.Bank}: {bMil.Count}");
+            }
+        }
+
+        public class millionaireBanks
+        {
+            public string Bank { get; set; }
+            public int Count { get; set; }
         }
         //Method to filter strings in collection by their first letter
         public static List<string> FilterByFirstLetter(List<string> collection, string letter)
