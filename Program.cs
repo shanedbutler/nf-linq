@@ -88,7 +88,7 @@ namespace linqd
             double highestPurchase = Math.Round(purchases.Max(), 2);
             Console.WriteLine($"Our highest priced sale was for ${highestPurchase}");
 
-            Console.WriteLine("\nPartitioning Operations\n");
+            Console.WriteLine("\nPartitioning Operations:\n");
 
             List<int> numbers2 = new List<int>()
             {
@@ -118,17 +118,39 @@ namespace linqd
                 new Customer(){ Name="Sid Brown", Balance=49582.68, Bank="CITI"}
             };
 
-            Console.WriteLine("\nLINQ'D Bank Millionaires Count");
+            List<Bank> banks = new List<Bank>() 
+            {
+                new Bank(){ Name="First Tennessee", Symbol="FTB"},
+                new Bank(){ Name="Wells Fargo", Symbol="WF"},
+                new Bank(){ Name="Bank of America", Symbol="BOA"},
+                new Bank(){ Name="Citibank", Symbol="CITI"},
+            };
 
-            var bankMillionaires = from customer in customers
-                                   where (customer.Balance >= 1000000)
-                                   group customer.Name by customer.Bank into bankGroup
-                                   select new millionaireBanks {Bank = bankGroup.Key, Count = bankGroup.Count()};
+            Console.WriteLine("\nLINQ'D Bank Millionaires Count:");
 
-            foreach (millionaireBanks bMil in bankMillionaires)
+            IEnumerable<millionaireBanks> bankReport = from customer in customers
+                                                             where (customer.Balance >= 1000000)
+                                                             group customer by customer.Bank into bankGroup
+                                                             select new millionaireBanks { Bank = bankGroup.Key, Count = bankGroup.Count() };
+
+            foreach (millionaireBanks bMil in bankReport)
             {
                 Console.WriteLine($"{bMil.Bank}: {bMil.Count}");
             }
+
+                Console.WriteLine("\nLINQ'D Millionaires:");
+
+            var millionairesBanks = from customer in customers
+                                    where (customer.Balance >= 1000000)
+                                    orderby customer.Name.Split(' ')[1] ascending
+                                    join bank in banks on customer.Bank equals bank.Symbol
+                                    select new {Customer = customer.Name, Bank = bank.Name};
+
+            foreach (var mBank in millionairesBanks)
+            {
+                Console.WriteLine($"{mBank.Customer} at {mBank.Bank}");
+            }
+
         }
 
         public class millionaireBanks
